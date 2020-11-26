@@ -16,56 +16,10 @@ namespace Lab_8_1
         {
             InitializeComponent();
             fileSystemWatcher1.Path = path;
-            
             fileSystemWatcher1.Changed += fsw_Changed;
             fileSystemWatcher1.Filter = "*.txt";
             fileSystemWatcher1.NotifyFilter = NotifyFilters.LastWrite;
 
-        }
-
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
-                return;
-            // получаем выбранный файл
-            string filename = saveFileDialog1.FileName;
-            // сохраняем текст в файл
-            File.WriteAllText(filename, textBox1.Text);
-            //MessageBox.Show("Файл сохранен");
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.ShowDialog();
-            if (openFileDialog1.FileName == String.Empty) return;
-            // Чтение текстового файла
-            try
-            {
-                var Reader = new System.IO.StreamReader(
-                openFileDialog1.FileName, Encoding.GetEncoding(1251)
-                );
-                textBox1.Text = Reader.ReadToEnd();
-                Reader.Close();
-                string fileName = Path.GetFileName(openFileDialog1.FileName);
-
-                fileSystemWatcher1.Filter = fileName;
-                fileSystemWatcher1.EnableRaisingEvents = true;
-              
-            }
-            catch (System.IO.FileNotFoundException ex)
-            {
-                MessageBox.Show(ex.Message + "\nНет такого файла",
-                         "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            { // отчет о других ошибках
-                MessageBox.Show(ex.Message,
-                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-           
-           
-           
         }
 
         private void fsw_Changed(object sender, FileSystemEventArgs e)
@@ -92,6 +46,47 @@ namespace Lab_8_1
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            // получаем выбранный файл
+            string filename = saveFileDialog1.FileName;
+            // сохраняем текст в файл
+            File.WriteAllText(filename, textBox1.Text);
+            //MessageBox.Show("Файл сохранен");
+        }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            if (openFileDialog1.FileName == String.Empty) return;
+            // Чтение текстового файла
+            try
+            {
+                var Reader = new System.IO.StreamReader(
+                openFileDialog1.FileName, Encoding.GetEncoding(1251)
+                );
+                textBox1.Text = Reader.ReadToEnd();
+                Reader.Close();
+                string fileName = Path.GetFileName(openFileDialog1.FileName);
+
+                fileSystemWatcher1.Filter = fileName;
+                fileSystemWatcher1.EnableRaisingEvents = true;
+
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message + "\nНет такого файла",
+                         "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception ex)
+            { // отчет о других ошибках
+                MessageBox.Show(ex.Message,
+                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }
